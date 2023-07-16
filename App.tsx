@@ -1,14 +1,17 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+
 import Colors from './src/global/Colors';
 
 import Onboarding from './src/screens/Onboarding/Onboarding';
+import Routes from './src/routes';
+
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Onboarding />
-    </SafeAreaView>
+    <View style={styles.container}>
+      <Routes />
+    </View>
   );
 };
 

@@ -6,12 +6,30 @@ interface ButtonProps {
   buttonTitle: string;
   buttonWithoutBackground?: boolean;
   onPress?: any;
+  specificColor?: any;
+  specificColorText?: any;
 };
 
-const Button = ({ buttonTitle, buttonWithoutBackground, onPress }: ButtonProps) => {
+const Button = ({ buttonTitle, buttonWithoutBackground, onPress, specificColor, specificColorText }: ButtonProps) => {
+  if (specificColor) {
+    return (
+      <TouchableOpacity style={[styles.button, { backgroundColor: specificColor }]} onPress={onPress}>
+        <Text style={[styles.title, { color: specificColorText ? specificColorText : Colors.white }]}>{buttonTitle}</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  if (buttonWithoutBackground) {
+    return (
+      <TouchableOpacity style={styles.buttonWithoutBackground} onPress={onPress}>
+        <Text style={styles.titleWithoutBackground}>{buttonTitle}</Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
-    <TouchableOpacity style={buttonWithoutBackground ? styles.buttonWithoutBackground : styles.button} onPress={onPress}>
-      <Text style={buttonWithoutBackground ? styles.titleWithoutBackground : styles.title}>{buttonTitle}</Text>
+    <TouchableOpacity style={styles.button} onPress={onPress}>
+      <Text style={styles.title}>{buttonTitle}</Text>
     </TouchableOpacity>
   );
 };

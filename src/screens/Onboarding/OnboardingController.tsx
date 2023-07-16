@@ -1,12 +1,14 @@
 import React, { useRef, useState } from 'react';
-import { Animated, Dimensions } from 'react-native';
+import { Animated } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import FingerprintScanner from 'react-native-fingerprint-scanner';
 
 import onboardingImage1 from '../../assets/image1.png';
 import onboardingImage2 from '../../assets/image2.png';
 import onboardingImage3 from '../../assets/image3.png';
 
 const OnboardingController = () => {
-  const screenWidth = Dimensions.get('screen').width;
+  const navigation: any = useNavigation();
 
   const [OnboardingList, setOnboardingList] = useState([
     { id: 1, image: onboardingImage1, title: 'Best Digital Solution' },
@@ -40,7 +42,36 @@ const OnboardingController = () => {
     setCurrentPage(viewableItems[0].index)
   }).current;
 
-  return { OnboardingList, scrollX, handleScroll, onboardingRef, currentPage, nextPage, skipOnboarding, ViewableItemsChanged }
+  const [biometryType, setBiometryType] = useState('');
+  const isSensorAvailable = () => {
+    FingerprintScanner.isSensorAvailable().then((biometryType) => {
+      setBiometryType(biometryType);
+    }).catch((error: any) => {
+      console.warn('Its no possible identify FaceID/TouchID', error);
+    });
+  };
+
+  const getMessage = () => {
+    if (biometryType == 'Face ID') {
+      return 'Scan Your Face on the Device to Continue';
+    } else {
+      return 'Scan Your Fingerprint on the Device Scanner to Continue';
+    };
+  };
+
+  const authenticationAccount = () => {
+    if (biometryType !== null && biometryType !== undefined) {
+      FingerprintScanner.authenticate({
+        description: getMessage()
+      }).then(() => {
+        navigation.navigate('Home');
+      }).catch(() => {
+        console.warn('Login has failed');
+      });
+    };
+  };
+
+  return { OnboardingList, scrollX, handleScroll, onboardingRef, currentPage, nextPage, skipOnboarding, ViewableItemsChanged, isSensorAvailable, authenticationAccount }
 };
 
 export default OnboardingController;

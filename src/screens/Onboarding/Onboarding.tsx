@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, FlatList, Dimensions, StyleSheet, Animated } from 'react-native';
+import { SafeAreaView, View, FlatList, Dimensions, StyleSheet, Animated } from 'react-native';
 
 // Components
 import OnboardingCard from '../../components/OnboardingCard';
@@ -14,10 +14,14 @@ const screenWidth = Dimensions.get('screen').width;
 
 
 const Onboarding = () => {
-  const { OnboardingList, onboardingRef, scrollX, handleScroll, currentPage, nextPage, skipOnboarding, ViewableItemsChanged } = OnboardingController();
+  const { OnboardingList, onboardingRef, scrollX, handleScroll, currentPage, nextPage, skipOnboarding, ViewableItemsChanged, isSensorAvailable, authenticationAccount } = OnboardingController();
+
+  useEffect(() => {
+    isSensorAvailable();
+  }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlatList 
         ref={onboardingRef}
         data={OnboardingList}
@@ -39,7 +43,7 @@ const Onboarding = () => {
       </View>
       <View style={styles.viewButtons}>
         { currentPage == OnboardingList?.length - 1 ? 
-          <Button buttonTitle='CONFIRM YOUR IDENTITY' onPress={() => {}} />
+          <Button buttonTitle='CONFIRM YOUR IDENTITY' onPress={() => authenticationAccount()} />
           :
           <>
             <Button buttonTitle='SKIP' buttonWithoutBackground onPress={() => skipOnboarding()} />
@@ -47,7 +51,7 @@ const Onboarding = () => {
           </>
         }
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
