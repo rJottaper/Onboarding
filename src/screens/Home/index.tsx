@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
-import Button from '../../components/Button';
+import { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
 
 import Colors from '../../global/Colors';
 
+// Components
+import Button from '../../components/Button';
+
+import HomeController from './HomeController'; 
+
+const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+
 const Home = () => {
+  const { gesture, getInitialHeight, rBottomStyle } = HomeController();
+
+  useEffect(() => {
+    getInitialHeight();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.viewBalance}>
@@ -15,9 +29,13 @@ const Home = () => {
         <Button buttonTitle='ADD MONEY' buttonWithoutBackground />
         <Button buttonTitle='REMOVE MONEY' buttonWithoutBackground />
       </View>
-      <View style={styles.viewBalanceHistory}>
-
-      </View>
+      <GestureHandlerRootView>
+        <GestureDetector gesture={gesture}>
+          <Animated.View style={[styles.viewBottomContainer, rBottomStyle]}>
+            <View style={styles.viewBottomLine} />
+          </Animated.View>
+        </GestureDetector>
+      </GestureHandlerRootView>
     </View>
   );
 };
@@ -46,11 +64,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 50
   },
-  viewBalanceHistory: {
-    flex: 1,
-    backgroundColor: Colors.white,
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50
+  viewBottomContainer: {
+    height: SCREEN_HEIGHT,
+    width: '100%',
+    backgroundColor: 'white',
+    position: 'absolute',
+    top: SCREEN_HEIGHT / 2,
+    borderRadius: 25,
+  },
+  viewBottomLine: {
+    alignSelf: 'center',
+    width: 75,
+    height: 4,
+    borderRadius: 4,
+    backgroundColor: Colors.background,
+    marginVertical: 15
   }
 });
 
