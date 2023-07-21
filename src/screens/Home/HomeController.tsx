@@ -3,9 +3,11 @@ import { Dimensions } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const HomeController = () => {
+  const WIDTH_MAX = SCREEN_WIDTH < 390 ? 300 : 420;
+
   const translateY = useSharedValue(0);
   const context = useSharedValue({ y: 0 });
 
@@ -13,7 +15,7 @@ const HomeController = () => {
     context.value = { y: translateY.value };
   }).onUpdate((event) => {
     translateY.value = event.translationY + context.value.y;
-    translateY.value = Math.max(translateY.value, -SCREEN_HEIGHT + 420);
+    translateY.value = Math.max(translateY.value, -SCREEN_HEIGHT + WIDTH_MAX);
   });
 
   const getInitialHeight = () => {

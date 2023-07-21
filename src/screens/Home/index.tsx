@@ -9,6 +9,7 @@ import Colors from '../../global/Colors';
 import Button from '../../components/Button';
 
 import HomeController from './HomeController'; 
+import HistoryCell from '../../components/HistoryCell';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -24,15 +25,17 @@ const Home = () => {
       <View style={styles.viewBalance}>
         <Text style={styles.balanceText}>TOTAL BALANCE</Text>
         <Text style={styles.amountText}>$ 1.000.000</Text>
-      </View>
-      <View style={styles.viewButtons}>
-        <Button buttonTitle='ADD MONEY' buttonWithoutBackground />
-        <Button buttonTitle='REMOVE MONEY' buttonWithoutBackground />
+        <View style={styles.viewButtons}>
+          <Button buttonTitle='ADD MONEY' buttonWithoutBackground />
+          <Button buttonTitle='REMOVE MONEY' buttonWithoutBackground />
+        </View>
       </View>
       <GestureHandlerRootView>
         <GestureDetector gesture={gesture}>
           <Animated.View style={[styles.viewBottomContainer, rBottomStyle]}>
             <View style={styles.viewBottomLine} />
+            <HistoryCell />
+            <HistoryCell isAmountOut />
           </Animated.View>
         </GestureDetector>
       </GestureHandlerRootView>
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
   },
   viewButtons: {
     flexDirection: 'row',
-    marginBottom: 50
+    marginTop: 35
   },
   viewBottomContainer: {
     height: SCREEN_HEIGHT,
