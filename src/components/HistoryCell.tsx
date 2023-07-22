@@ -7,16 +7,17 @@ import Colors from '../global/Colors';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 interface HistoryCellProps {
+  amount: number;
   isAmountOut?: boolean;
 };
 
-const HistoryCell = ({ isAmountOut }: HistoryCellProps) => {
+const HistoryCell = ({ amount, isAmountOut }: HistoryCellProps) => {
   if (isAmountOut) {
     return (
       <View style={styles.cellContainer}>
         <Icon name='arrow-down-left' color={Colors.red} size={40} />
         <View style={styles.textsView}>
-          <Text style={[styles.amountText, { color: Colors.red }]}>$1450</Text>
+          <Text style={[styles.amountText, { color: Colors.red }]}>${amount}</Text>
           <View style={styles.viewAmountOut}>
             <Text style={styles.dateText}>Jul 17 - 2023</Text>
             <Text style={styles.textTypeAmountOut}>Food</Text>
@@ -30,7 +31,7 @@ const HistoryCell = ({ isAmountOut }: HistoryCellProps) => {
     <View style={styles.cellContainer}>
       <Icon name='arrow-up-right' color={Colors.green} size={40} />
       <View style={styles.textsView}>
-        <Text style={[styles.amountText, { color: Colors.green }]}>$1450</Text>
+        <Text style={[styles.amountText, { color: Colors.green }]}>${amount}</Text>
         <Text style={styles.dateText}>Jul 18 - 2023</Text>
       </View>
     </View>

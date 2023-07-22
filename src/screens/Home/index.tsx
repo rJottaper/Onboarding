@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, Dimensions, StyleSheet, FlatList, ScrollView } from 'react-native';
 import { GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
@@ -14,7 +14,7 @@ import HistoryCell from '../../components/HistoryCell';
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const Home = () => {
-  const { gesture, getInitialHeight, rBottomStyle } = HomeController();
+  const { amount, addMoney, removeMoney, transactionList, gesture, getInitialHeight, rBottomStyle } = HomeController();
 
   useEffect(() => {
     getInitialHeight();
@@ -24,18 +24,22 @@ const Home = () => {
     <View style={styles.container}>
       <View style={styles.viewBalance}>
         <Text style={styles.balanceText}>TOTAL BALANCE</Text>
-        <Text style={styles.amountText}>$ 1.000.000</Text>
+        <Text style={styles.amountText}>$ {amount}</Text>
         <View style={styles.viewButtons}>
-          <Button buttonTitle='ADD MONEY' buttonWithoutBackground />
-          <Button buttonTitle='REMOVE MONEY' buttonWithoutBackground />
+          <Button buttonTitle='ADD MONEY' buttonWithoutBackground onPress={() => addMoney()} />
+          <Button buttonTitle='REMOVE MONEY' buttonWithoutBackground onPress={() => removeMoney()} />
         </View>
       </View>
       <GestureHandlerRootView>
         <GestureDetector gesture={gesture}>
           <Animated.View style={[styles.viewBottomContainer, rBottomStyle]}>
             <View style={styles.viewBottomLine} />
-            <HistoryCell />
-            <HistoryCell isAmountOut />
+            <FlatList 
+              data={transactionList}
+              keyExtractor={(item: any, index: any) => index}
+              renderItem={({ item }) => <HistoryCell amount={item.amount} isAmountOut={item.withdraw} />}
+              ListFooterComponent={<View style={{ height: 320 }} />}
+            />
           </Animated.View>
         </GestureDetector>
       </GestureHandlerRootView>
@@ -68,6 +72,7 @@ const styles = StyleSheet.create({
     marginTop: 35
   },
   viewBottomContainer: {
+    flex: 1,
     height: SCREEN_HEIGHT,
     width: '100%',
     backgroundColor: 'white',
