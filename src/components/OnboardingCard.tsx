@@ -4,7 +4,7 @@ import { View, Text, Image, Dimensions, StyleSheet } from 'react-native';
 import Colors from '../global/Colors';
 
 const imageWidth = Dimensions.get('screen').width;
-const imageHeight = Dimensions.get('screen').height / 1.8;
+const imageHeight = Dimensions.get('screen').height / 2;
 
 interface OnboardingCardProps {
   image: any;
