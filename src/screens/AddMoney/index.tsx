@@ -9,7 +9,7 @@ import AddMoneyController from './AddMoneyController';
 import Button from '../../components/Button';
 
 const AddMoney = () => {
-  const { amount, setAmount, amountMessageError } = AddMoneyController();
+  const { amount, formatNumber, amountMessageError, addMoney } = AddMoneyController();
   const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
 
   return (
@@ -26,12 +26,12 @@ const AddMoney = () => {
               inputName='AMOUNT' 
               placeholderText='How Much?'
               input={amount}
-              setInput={setAmount}
+              setInput={(text: string) => formatNumber(text)}
               errorMessage={amountMessageError}
             />
           </View>
           <View style={styles.viewButton}>
-            <Button buttonTitle='ADD MONEY' onPress={() => {}} />
+            <Button buttonTitle='ADD MONEY' onPress={() => addMoney()} />
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
