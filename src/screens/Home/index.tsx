@@ -13,18 +13,25 @@ import HistoryCell from '../../components/HistoryCell';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-const Home = () => {
-  const { amount, addMoney, removeMoney, transactionList, gesture, getInitialHeight, rBottomStyle } = HomeController();
+const Home = ({ route }: any) => {
+  const { amount, setAmount, addMoney, removeMoney, transactionList, gesture, getInitialHeight, rBottomStyle } = HomeController();
 
   useEffect(() => {
     getInitialHeight();
   }, []);
 
+  useEffect(() => {
+    if (route.params) {
+      const { amountValue } = route.params;
+      setAmount(amount + amountValue);
+    };
+  }, [route.params]);
+
   return (
     <View style={styles.container}>
       <View style={styles.viewBalance}>
         <Text style={styles.balanceText}>TOTAL BALANCE</Text>
-        <Text style={styles.amountText}>$ {amount}</Text>
+        <Text style={styles.amountText}>{Number(amount / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD'})}</Text>
         <View style={styles.viewButtons}>
           <Button buttonTitle='ADD MONEY' buttonWithoutBackground onPress={() => addMoney()} />
           <Button buttonTitle='REMOVE MONEY' buttonWithoutBackground onPress={() => removeMoney()} />

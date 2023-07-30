@@ -9,18 +9,15 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('window');
 const HomeController = () => {
   const navigation: any = useNavigation();
 
-  const [amount, setAmount] = useState(0.00);
+  const [amount, setAmount] = useState(0);
   const [transactionList, setTransactionList]: any = useState([]);
 
   const addMoney = () => {
-    navigation.navigate('AddMoney')
+    navigation.navigate('AddMoney');
   };
 
   const removeMoney = () => {
-    if (amount > 0) {
-      setAmount(amount - 1000);
-      setTransactionList((oldData: any) => [...oldData, { amount: 1000, withdraw: true }])
-    };
+    console.log('Click');
   };
 
   const WIDTH_MAX = SCREEN_WIDTH < 390 ? 300 : 420;
@@ -45,7 +42,7 @@ const HomeController = () => {
     };
   });
 
-  return { amount, addMoney, removeMoney, transactionList, gesture, getInitialHeight, rBottomStyle };
+  return { amount, setAmount, addMoney, removeMoney, transactionList, gesture, getInitialHeight, rBottomStyle };
 };
 
 export default HomeController;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, Text, KeyboardAvoidingView, Keyboard, Platform, TouchableWithoutFeedback, StyleSheet } from 'react-native';
+import { SafeAreaView, View, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 
 import Colors from '../../global/Colors';
 
@@ -9,8 +9,7 @@ import AddMoneyController from './AddMoneyController';
 import Button from '../../components/Button';
 
 const AddMoney = () => {
-  const { amount, formatNumber, amountMessageError, addMoney } = AddMoneyController();
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
+  const { amount, maskMoney, amountMessageError, addMoney, keyboardVerticalOffset } = AddMoneyController();
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -26,7 +25,7 @@ const AddMoney = () => {
               inputName='AMOUNT' 
               placeholderText='How Much?'
               input={amount}
-              setInput={(text: string) => formatNumber(text)}
+              setInput={(amount: any) => maskMoney(amount)}
               errorMessage={amountMessageError}
             />
           </View>

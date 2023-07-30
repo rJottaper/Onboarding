@@ -1,25 +1,36 @@
 import React, { useState } from 'react';
+import { Platform } from 'react-native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 
 const AddMoneyController = () => {
-  const [amount, setAmount] = useState('');
+  const navigation: any = useNavigation();
+
+  const [amount, setAmount]: any = useState(0);
+  const [amountToSend, setAmountToSend]: any = useState(0);
   const [amountMessageError, setAmountMessageError] = useState('');
 
-  const formatNumber = (number: string) => {
-    if (!number) return setAmount('');
+  const maskMoney = (value: any) => {
+    const cleanValue = value.replace(/[^\d]/g, '');
 
-    const unformattedValue = number.replace(/\./g, '');
-    const formattedValue = parseInt(unformattedValue, 10).toLocaleString('pt-BR', { minimumFractionDigits: 0 });
+    const formatted = Number(cleanValue / 100).toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    });
 
-    setAmount(formattedValue);
+    setAmountToSend(cleanValue);
+    setAmount(formatted)
   };
 
   const addMoney = () => {
-    if (amount === '') return setAmountMessageError('Please, add some value');
+    if (amount === 0 || amount === '$0.00') return setAmountMessageError('Please, add some value');
 
     setAmountMessageError('');
+    navigation.navigate('Home', { amountValue: Number(amountToSend) })
   };
 
-  return { amount, formatNumber, amountMessageError, addMoney }
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
+
+  return { amount, maskMoney, amountMessageError, addMoney, keyboardVerticalOffset }
 };
 
 export default AddMoneyController;
